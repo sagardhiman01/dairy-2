@@ -257,6 +257,17 @@ app.delete('/api/admin/hero/:id', adminAuth, async (req, res) => {
     }
 });
 
+const https = require('https');
+const RENDER_URL = process.env.APP_URL || 'https://dairy-2-ndj5.onrender.com/';
+
+setInterval(() => {
+    https.get(RENDER_URL, (res) => {
+        console.log(`[Self-Ping] Pinged ${RENDER_URL} successfully to keep server awake. Status: ${res.statusCode}`);
+    }).on('error', (err) => {
+        console.error(`[Self-Ping] Error pinging ${RENDER_URL}:`, err.message);
+    });
+}, 10 * 60 * 1000); // 10 minutes
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
