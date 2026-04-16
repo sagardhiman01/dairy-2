@@ -7,11 +7,13 @@ const isPostgres = process.env.DATABASE_URL ? true : false;
 let db;
 
 if (isPostgres) {
-    db = new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
-    });
-    console.log("Using PostgreSQL Database");
+    const isInternal = process.env.DATABASE_URL.includes('internal');
+    const connectionConfig = { connectionString: process.env.DATABASE_URL };
+    if (!isInternal) {
+        connectionConfig.ssl = { rejectUnauthorized: false };
+    }
+    db = new Pool(connectionConfig);
+    console.log("Using PostgreSQL Database (Internal: " + isInternal + ")");
 } else {
     db = new sqlite3.Database('./farmas.db');
     console.log("Using SQLite Database");
@@ -133,7 +135,12 @@ const initDB = async () => {
             ['Fresh Malai Paneer', 450, 'Dairy', 'malai_paneer.png', 5.0, 'Best Seller', 'kg', 0.5],
             ['Full Cream Fresh Milk', 68, 'Milk', 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80', 4.9, 'Fresh', 'L', 2],
             ['Khoya (Mawa)', 380, 'Dairy', 'khoya.png', 4.7, '', 'kg', 0.5],
-            ['Fresh Thick Curd', 120, 'Dairy', 'curd.png', 4.8, '', 'kg', 1]
+            ['Fresh Thick Curd', 120, 'Dairy', 'curd.png', 4.8, '', 'kg', 1],
+            ['Fresh Soy Chaap', 150, 'Dairy', 'chaap.png', 4.6, 'Fresh', 'kg', 1],
+            ['Masala Buttermilk', 35, 'Beverage', 'masala_buttermilk.png', 4.8, 'Cooling', 'L', 1],
+            ['Frozen Green Peas', 90, 'Dairy', 'peas.png', 4.7, '', 'kg', 1],
+            ['Artisan Cheese', 650, 'Dairy', 'artisan_cheese_cat.png', 4.9, 'Premium', 'kg', 0.25],
+            ['Fresh Pav Bread', 45, 'Bakery', 'pav.png', 4.6, 'Fresh', 'pack', 1]
         ];
         for (let p of products) {
             const placeholder = isPostgres ? '$1, $2, $3, $4, $5, $6, $7, $8' : '?, ?, ?, ?, ?, ?, ?, ?';
