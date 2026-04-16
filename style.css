@@ -559,7 +559,7 @@ ul {
 
 /* Hero Section */
 .hero {
-    height: auto;
+    height: 750px;
     min-height: 750px;
     background: rgba(234, 234, 223, 0.85); /* Semi-transparent cream */
     backdrop-filter: blur(8px);
@@ -569,6 +569,7 @@ ul {
 
 @media (max-width: 768px) {
     .hero {
+        height: 500px;
         min-height: 500px;
     }
 }
@@ -595,7 +596,9 @@ ul {
     display: flex;
     align-items: center;
     height: 100%;
+    min-height: 100%;
     position: relative;
+    width: 100%;
 }
 
 .hero-slide::before {
