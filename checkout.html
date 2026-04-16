@@ -345,6 +345,11 @@
                                 <h4>PhonePe / UPI</h4>
                                 <small>Scan & Pay instantly</small>
                             </div>
+                            <div class="payment-method" id="rzp-method" onclick="selectPayment('card')" style="display: none;">
+                                <i class="fas fa-credit-card"></i>
+                                <h4>Online Payment</h4>
+                                <small>Razorpay (Cards/UPI)</small>
+                            </div>
                         </div>
 
                         <div id="upi-section" class="upi-details">
@@ -470,6 +475,11 @@
             // Load Settings
             siteSettings = await fetch('/api/settings').then(r => r.json());
             getUserLocation();
+
+            if (siteSettings.razorpay_active === 'true') {
+                const rzpElement = document.getElementById('rzp-method');
+                if (rzpElement) rzpElement.style.display = 'block';
+            }
 
             const userData = localStorage.getItem('user_data');
             if (!userData) {

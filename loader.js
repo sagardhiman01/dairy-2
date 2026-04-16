@@ -71,32 +71,23 @@ const checkUserAuth = () => {
         const user = JSON.parse(userData);
         authLinks.forEach(authLink => {
             authLink.outerHTML = `
-                <div class="user-profile-menu" style="position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; color: white;">
-                    <i class="fas fa-user-circle" style="font-size: 1.2rem; color: var(--accent);"></i>
-                    <span style="font-weight: 600;">${user.name.split(' ')[0]}</span>
-                    <div class="user-drop" style="display: none; position: absolute; top: 100%; right: 0; background: white; color: #333; padding: 10px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 1000; width: 120px; margin-top: 5px;">
-                        <a href="#" onclick="logoutUser()" style="display: block; padding: 8px; text-decoration: none; color: #ff4d4d; font-size: 14px; font-weight: 600;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <div style="display: inline-flex; align-items: center; gap: 15px; color: var(--text-main);">
+                    <div style="display: flex; align-items: center; gap: 5px; font-weight: 600; font-size: 14px;">
+                        <i class="fas fa-user-circle" style="font-size: 1.2rem; color: var(--accent);"></i>
+                        ${user.name.split(' ')[0]}
                     </div>
+                    <button onclick="logoutUser()" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4); animation: pulseLogout 2s infinite; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fas fa-power-off"></i> Logout
+                    </button>
+                    <style>
+                        @keyframes pulseLogout {
+                            0% { box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.4); }
+                            70% { box-shadow: 0 0 0 10px rgba(255, 65, 108, 0); }
+                            100% { box-shadow: 0 0 0 0 rgba(255, 65, 108, 0); }
+                        }
+                    </style>
                 </div>
             `;
-        });
-        
-        // Toggle menu logic for all menus
-        const menus = document.querySelectorAll('.user-profile-menu');
-        menus.forEach(menu => {
-            menu.addEventListener('click', function(e) {
-                const drop = this.querySelector('.user-drop');
-                if (drop) {
-                    const isVisible = drop.style.display === 'block';
-                    document.querySelectorAll('.user-drop').forEach(d => d.style.display = 'none'); // hide all
-                    drop.style.display = isVisible ? 'none' : 'block';
-                }
-                e.stopPropagation();
-            });
-        });
-        
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.user-drop').forEach(drop => drop.style.display = 'none');
         });
     }
 };

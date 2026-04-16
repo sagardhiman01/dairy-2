@@ -154,6 +154,9 @@ const loadSettings = async () => {
         const input = document.getElementById(`set-${key}`);
         if (input) input.value = value;
     });
+    if (settings.razorpay_active) {
+        document.getElementById('set-razorpay_active').value = settings.razorpay_active;
+    }
 };
 
 // --- CRUD Operations ---
@@ -219,6 +222,7 @@ const saveSettings = async () => {
         fallback_delivery_fee: document.getElementById('set-fallback_delivery_fee').value,
         store_lat: document.getElementById('set-store_lat').value,
         store_lng: document.getElementById('set-store_lng').value,
+        razorpay_active: document.getElementById('set-razorpay_active').value
     };
     await apiFetch('/api/admin/settings', { method: 'POST', body: JSON.stringify(settings) });
     alert('Settings saved successfully!');
