@@ -65,33 +65,38 @@ const loadTestimonials = async () => {
 
 const checkUserAuth = () => {
     const userData = localStorage.getItem('user_data');
-    const authLink = document.querySelector('a[href="login.html"]'); // Assuming there's a login link
+    const authLinks = document.querySelectorAll('a[href="login.html"]');
     
-    if (userData && authLink) {
+    if (userData && authLinks.length > 0) {
         const user = JSON.parse(userData);
-        authLink.outerHTML = `
-            <div class="user-profile-menu" style="position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; color: white;">
-                <i class="fas fa-user-circle" style="font-size: 1.2rem; color: var(--accent);"></i>
-                <span style="font-weight: 600;">${user.name.split(' ')[0]}</span>
-                <div class="user-drop" style="display: none; position: absolute; top: 100%; right: 0; background: white; color: #333; padding: 10px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 1000; width: 120px; margin-top: 5px;">
-                    <a href="#" onclick="logoutUser()" style="display: block; padding: 8px; text-decoration: none; color: #ff4d4d; font-size: 14px; font-weight: 600;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        authLinks.forEach(authLink => {
+            authLink.outerHTML = `
+                <div class="user-profile-menu" style="position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; color: white;">
+                    <i class="fas fa-user-circle" style="font-size: 1.2rem; color: var(--accent);"></i>
+                    <span style="font-weight: 600;">${user.name.split(' ')[0]}</span>
+                    <div class="user-drop" style="display: none; position: absolute; top: 100%; right: 0; background: white; color: #333; padding: 10px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 1000; width: 120px; margin-top: 5px;">
+                        <a href="#" onclick="logoutUser()" style="display: block; padding: 8px; text-decoration: none; color: #ff4d4d; font-size: 14px; font-weight: 600;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        });
         
-        // Toggle menu
-        const menu = document.querySelector('.user-profile-menu');
-        if (menu) {
+        // Toggle menu logic for all menus
+        const menus = document.querySelectorAll('.user-profile-menu');
+        menus.forEach(menu => {
             menu.addEventListener('click', function(e) {
                 const drop = this.querySelector('.user-drop');
-                if (drop) drop.style.display = drop.style.display === 'none' ? 'block' : 'none';
+                if (drop) {
+                    const isVisible = drop.style.display === 'block';
+                    document.querySelectorAll('.user-drop').forEach(d => d.style.display = 'none'); // hide all
+                    drop.style.display = isVisible ? 'none' : 'block';
+                }
                 e.stopPropagation();
             });
-        }
+        });
         
         document.addEventListener('click', () => {
-            const drop = document.querySelector('.user-drop');
-            if (drop) drop.style.display = 'none';
+            document.querySelectorAll('.user-drop').forEach(drop => drop.style.display = 'none');
         });
     }
 };
