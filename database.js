@@ -127,9 +127,10 @@ const initDB = async () => {
         await runQuery(q);
     }
 
-    // Seed Data if empty
-    const productCount = await executeQuery("SELECT count(*) as count FROM products");
-    if (parseInt(productCount[0].count) === 0) {
+    // Seed Data unconditionally for this deployment to fix missing products
+    await runQuery("DELETE FROM products");
+    const productCount = [{ count: 0 }]; // Force true
+    if (true) {
         const products = [
             ['Premium Cow Ghee', 750, 'Dairy', 'desi_ghee.png', 5.0, 'Premium', 'kg', 1],
             ['Fresh Malai Paneer', 450, 'Dairy', 'malai_paneer.png', 5.0, 'Best Seller', 'kg', 0.5],

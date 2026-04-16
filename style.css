@@ -1035,16 +1035,21 @@ ul {
 
 /* Flash Deal */
 .deal-card {
-    background: var(--primary-dark);
+    background-image: linear-gradient(rgba(45, 90, 39, 0.8), rgba(45, 90, 39, 0.8)), url('cow_farm_bg.png');
+    background-size: cover;
+    background-position: center;
     border-radius: 30px;
     display: flex;
     overflow: hidden;
     color: var(--white);
+    text-align: center;
+    justify-content: center;
 }
 
 .deal-content {
     flex: 1;
     padding: 60px;
+    max-width: 800px;
 }
 
 .section-title {
@@ -1059,12 +1064,14 @@ ul {
 .countdown-timer {
     display: flex;
     gap: 20px;
-    margin: 40px 0;
+    margin: 40px auto;
+    justify-content: center;
 }
 
 .time-block {
     text-align: center;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
     padding: 15px;
     border-radius: 12px;
     min-width: 80px;
@@ -1081,16 +1088,6 @@ ul {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
-}
-
-.deal-image {
-    flex: 1;
-}
-
-.deal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 /* Footer */
