@@ -158,10 +158,24 @@
                 <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); position: absolute; width: 100%; top: 5px; z-index: 1;">
                 <span style="background: var(--bg); padding: 0 10px; position: relative; z-index: 2;">OR</span>
             </div>
-            <button type="button" class="btn" style="background: white; color: #333; display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="googleLogin()">
-                <i class="fab fa-google" style="color: #DB4437; font-size: 18px;"></i>
-                Continue with Google
-            </button>
+            <!-- Official Google Identity Button -->
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleResponse"
+                 data-auto_select="false"
+                 data-itp_support="true">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="continue_with"
+                 data-size="large"
+                 data-logo_alignment="center"
+                 style="display: flex; justify-content: center; margin-bottom: 10px;">
+            </div>
         </form>
         <div class="footer">
             Don't have an account? <a href="signup.html">Create one</a>
@@ -196,17 +210,36 @@
             }
         });
 
-        function googleLogin() {
-            const email = prompt("Google Sign-In Simulation:\n\nPlease enter the Google email address you want to use to login/register:");
-            if (!email) return;
-            localStorage.setItem('user_token', 'google-auth-mock-token');
-            localStorage.setItem('user_data', JSON.stringify({
-                name: email.split('@')[0],
-                email: email,
-                role: "customer"
-            }));
-            window.location.href = 'index.html';
+        // Display alert for the client ID
+        document.querySelector('.g_id_signin').addEventListener('click', () => {
+            const clientId = document.getElementById('g_id_onload').getAttribute('data-client_id');
+            if(clientId.includes('YOUR_GOOGLE_CLIENT_ID')) {
+                alert("NOTICE: To make this official Google Login work, you must replace 'YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com' in the HTML code with your own Client ID from the Google Cloud Console.");
+            }
+        });
+
+        function handleGoogleResponse(response) {
+            try {
+                // Decode Google JWT
+                const base64Url = response.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                const payload = JSON.parse(jsonPayload);
+
+                localStorage.setItem('user_token', response.credential);
+                localStorage.setItem('user_data', JSON.stringify({
+                    name: payload.name,
+                    email: payload.email,
+                    role: "customer"
+                }));
+                window.location.href = 'index.html';
+            } catch (err) {
+                console.error("Google login decode failed:", err);
+            }
         }
     </script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>
