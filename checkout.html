@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Vaishnavi Mava Bhandar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="loader.js" defer></script>
+    <style>
+        :root {
+            --primary: #2d5a27;
+            --primary-dark: #1e3d1a;
+            --accent: #E89E19;
+            --text-main: #0e2202;
+            --text-muted: #5b6c52;
+            --bg-light: #f9fbf8;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: 'Jost', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseShadow {
+            0% { box-shadow: 0 0 0 0 rgba(45, 90, 39, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(45, 90, 39, 0.0); }
+            100% { box-shadow: 0 0 0 0 rgba(45, 90, 39, 0.0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .checkout-container {
+            padding: 60px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .checkout-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .checkout-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .checkout-section h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary-dark);
+        }
+
+        .checkout-section h2 i {
+            color: var(--accent);
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid #eee;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #fdfdfd;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 5px 15px rgba(45, 90, 39, 0.1);
+            outline: none;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .payment-method {
+            padding: 24px 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            background: white;
+        }
+
+        .payment-method i {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .payment-method h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .payment-method small {
+            font-size: 11px;
+            display: block;
+            color: var(--text-muted);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: rgba(45, 90, 39, 0.03);
+            transform: scale(1.05);
+        }
+
+        .payment-method.active i {
+            color: var(--primary);
+        }
+
+        .upi-details {
+            display: none;
+            text-align: center;
+            background: #f8f9f8;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px dashed var(--primary);
+            margin-top: 20px;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .upi-details.active {
+            display: block;
+        }
+
+        .qr-card {
+            display: inline-block;
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .qr-card img {
+            width: 180px;
+            display: block;
+        }
+
+        .order-summary {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            position: sticky;
+            top: 100px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .order-summary h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .summary-total {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        /* Premium Place Order Button */
+        .btn-place-order {
+            width: 100%;
+            height: 65px;
+            background: linear-gradient(45deg, var(--primary), #3ca52b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(45, 90, 39, 0.3);
+            animation: pulseShadow 2s infinite;
+        }
+
+        .btn-place-order::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-place-order:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(45, 90, 39, 0.4);
+        }
+
+        .btn-place-order:hover::before {
+            left: 100%;
+        }
+
+        .btn-place-order:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .btn-place-order.processing {
+            background: #999;
+            pointer-events: none;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 992px) {
+            .payment-options { grid-template-columns: 1fr; }
+            .checkout-container { padding: 30px 0; }
+            .order-summary { position: static; margin-top: 40px; }
+            .mobile-sticky-footer { display: flex; }
+            .order-summary .btn-place-order { display: none; }
+            .checkout-container { padding-bottom: 100px; }
+        }
+
+        /* Mobile Sticky Footer */
+        .mobile-sticky-footer {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sticky-price-info { display: flex; flex-direction: column; }
+        .sticky-price-info span { font-size: 13px; color: var(--text-muted); }
+        .sticky-price-info strong { font-size: 20px; color: var(--primary-dark); font-weight: 800; }
+
+        .btn-sticky-pay {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(232, 158, 25, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="container">
+            <div class="checkout-grid">
+                <div class="checkout-main">
+                    <a href="shop.html" style="display: inline-block; margin-bottom: 30px; color: var(--primary); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-arrow-left"></i> Back to Shopping
+                    </a>
+                    
+                    <div class="checkout-section">
+                        <h2><i class="fas fa-map-location-dot"></i> Delivery Address</h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="cust-name" placeholder="E.g. Shivam Kumar">
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="tel" id="cust-phone" placeholder="+91 00000 00000">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label>State / Region (Pan India Delivery)</label>
+                            <input type="text" id="delivery-area" placeholder="E.g. Delhi NCR, Uttar Pradesh...">
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label>Complete Street Address</label>
+                            <textarea id="cust-address" rows="3" placeholder="House No, Society, Landmark..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checkout-section">
+                        <h2><i class="fas fa-wallet"></i> Payment Method</h2>
+                        <div class="payment-options">
+                            <div class="payment-method active" onclick="selectPayment('cod')">
+                                <i class="fas fa-hand-holding-dollar"></i>
+                                <h4>Cash on Delivery</h4>
+                                <small>Pay at your doorstep</small>
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('upi')">
+                                <i class="fas fa-qrcode"></i>
+                                <h4>PhonePe / UPI</h4>
+                                <small>Scan & Pay instantly</small>
+                            </div>
+                        </div>
+
+                        <div id="upi-section" class="upi-details">
+                            <h4 style="color: var(--primary-dark); font-weight: 800; margin-bottom: 5px;">PhonePe Official QR</h4>
+                            <p style="font-size: 13px; color: var(--text-muted);">Please scan the QR and enter the transaction ID below</p>
+                            
+                            <div class="qr-card" style="width: 200px; height: 200px; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; position: relative;">
+                                <img src="phonepe_qr.png" alt="PhonePe QR Code" style="width: 250px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            </div>
+                            
+                            <p style="font-weight: 800; color: #333; margin-bottom: 20px;">Payee: MONU</p>
+                            
+                            <div class="form-group" style="text-align: left; max-width: 300px; margin: 0 auto;">
+                                <label>Last 4 Digits of Transaction ID</label>
+                                <input type="text" id="transaction-id" placeholder="Ex: 1234">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-summary-container">
+                    <div class="order-summary">
+                        <h3>Order Summary</h3>
+                        <div id="summary-items-list">
+                            <!-- Items injected via cart-manager.js -->
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <div class="summary-item">
+                                <span>Cart Subtotal</span>
+                                <span id="subtotal">₹0.00</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Delivery Fee</span>
+                                <span id="delivery-fee-display" style="color: var(--primary); font-weight: 600;">FREE</span>
+                            </div>
+                            <div class="summary-item summary-total">
+                                <span>Total to Pay</span>
+                                <span id="total">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <button class="btn-place-order" id="place-order-btn" onclick="placeOrder()">
+                            Place Order Now <i class="fas fa-chevron-right" style="margin-left: 10px; font-size: 14px;"></i>
+                        </button>
+                        
+                        <div style="margin-top: 25px; text-align: center;">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 12px; color: var(--text-muted);">
+                                <i class="fas fa-shield-check" style="color: var(--primary);"></i> 100% Secure Transaction
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Sticky Footer -->
+    <!-- Mobile Sticky Footer -->
+    <div class="mobile-sticky-footer">
+        <div class="sticky-price-info">
+            <span>Total Payable</span>
+            <strong id="sticky-total">₹0.00</strong>
+        </div>
+        <button class="btn-sticky-pay" onclick="placeOrder()">Place Order</button>
+    </div>
+
+    <script src="cart-manager.js"></script>
+    <script>
+        let cart = JSON.parse(localStorage.getItem('vaishnavi_cart')) || [];
+        let siteSettings = {};
+        let userLocation = null;
+        let deliveryCharge = 0;
+
+        // Haversine formula to calculate distance in KM
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function deg2rad(deg) { return deg * (Math.PI / 180); }
+
+        const updateDeliveryCharge = () => {
+            if (userLocation && siteSettings.store_lat && siteSettings.store_lng) {
+                const distance = calculateDistance(
+                    userLocation.lat, userLocation.lng,
+                    parseFloat(siteSettings.store_lat), parseFloat(siteSettings.store_lng)
+                );
+                const rate = parseFloat(siteSettings.delivery_rate || 10);
+                deliveryCharge = Math.ceil(distance * rate);
+                console.log(`Distance: ${distance.toFixed(2)}km, Charge: ₹${deliveryCharge}`);
+            } else {
+                deliveryCharge = parseFloat(siteSettings.fallback_delivery_fee || 50);
+            }
+            renderSummary();
+        };
+
+        const getUserLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                        updateDeliveryCharge();
+                    },
+                    (err) => {
+                        console.warn("Location denied:", err);
+                        updateDeliveryCharge();
+                    }
+                );
+            } else {
+                updateDeliveryCharge();
+            }
+        };
+        
+        // Login check & Load settings
+        window.addEventListener('load', async () => {
+            // Load Settings
+            siteSettings = await fetch('/api/settings').then(r => r.json());
+            getUserLocation();
+
+            const userData = localStorage.getItem('user_data');
+            if (!userData) {
+                alert("Please login to proceed with checkout.");
+                window.location.href = 'login.html?redirect=checkout.html';
+                return;
+            }
+            const user = JSON.parse(userData);
+            document.getElementById('cust-name').value = user.name;
+            document.getElementById('cust-phone').value = user.phone || '';
+            document.getElementById('cust-address').value = user.address || '';
+        });
+        
+        function renderSummary() {
+            const list = document.getElementById('summary-items-list');
+            let total = 0;
+            
+            if (cart.length === 0) {
+                list.innerHTML = '<p style="text-align: center; padding: 20px; opacity: 0.7;">Your cart is empty.</p>';
+                document.getElementById('subtotal').textContent = '₹0.00';
+                document.getElementById('total').textContent = '₹0.00';
+                return;
+            }
+
+            list.innerHTML = cart.map((item, index) => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="summary-item" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                        <div>
+                            <span style="display: block; font-weight: 600;">${item.name}</span>
+                            <span style="font-size: 13px; opacity: 0.8;">${item.quantity}${item.unit_label} × ₹${item.price}</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="display: block;">₹${(item.price * item.quantity).toFixed(2)}</span>
+                            <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ff4d4d; cursor: pointer; padding: 5px; font-size: 16px;" title="Remove Item">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('subtotal').textContent = `₹${total.toFixed(2)}`;
+            const finalTotal = total + deliveryCharge;
+            document.getElementById('total').textContent = `₹${finalTotal.toFixed(2)}`;
+            document.getElementById('sticky-total').textContent = `₹${finalTotal.toFixed(2)}`;
+            
+            // Update Delivery Text in Summary
+            const deliverySpan = document.querySelector('.summary-item span[style*="color: #00ff88;"]');
+            if (deliverySpan) {
+                deliverySpan.textContent = `₹${deliveryCharge.toFixed(2)}`;
+                deliverySpan.style.color = 'inherit';
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('vaishnavi_cart', JSON.stringify(cart));
+            renderSummary();
+            
+            if (cart.length === 0) {
+                alert("Cart is empty. Returning to shop.");
+                window.location.href = 'shop.html';
+            }
+        }
+
+        let selectedPaymentType = 'cod'; // default
+
+        function selectPayment(type) {
+            selectedPaymentType = type;
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+            document.getElementById('upi-section').classList.remove('active');
+            
+            const selected = event.currentTarget;
+            selected.classList.add('active');
+            
+            if (type === 'upi') {
+                document.getElementById('upi-section').classList.add('active');
+            }
+        }
+
+        async function placeOrder() {
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const area = document.getElementById('delivery-area').value;
+            const address = document.getElementById('cust-address').value;
+            const transactionId = document.getElementById('transaction-id')?.value || '';
+            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const minOrder = parseFloat(siteSettings.min_order || 100);
+
+            if (cartTotal < minOrder) {
+                alert(`Minimum order value is ₹${minOrder}. Please add more items.`);
+                return;
+            }
+
+            if (!name || !phone || !area || !address) {
+                alert("Please fill all delivery details.");
+                return;
+            }
+
+            const checkoutBtn = event.target;
+            const originalText = checkoutBtn.textContent;
+            checkoutBtn.disabled = true;
+            checkoutBtn.textContent = 'Processing...';
+
+            try {
+                if (selectedPaymentType === 'cod' || selectedPaymentType === 'upi') {
+                    // Manual Order (COD or QR)
+                    const res = await fetch('/api/orders/manual', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            items: cart,
+                            customer: { name, phone, address: `${area}, ${address}` },
+                            delivery_fee: deliveryCharge,
+                            payment_method: selectedPaymentType,
+                            transaction_id: transactionId
+                        })
+                    });
+                    const result = await res.json();
+                    if (result.status === 'success') {
+                        // Generate WhatsApp Message
+                        const finalTotal = cartTotal + deliveryCharge;
+                        let msg = `*New Order - Vaishnavi Mava Bhandar*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${area}, ${address}%0A*Payment:* ${selectedPaymentType.toUpperCase()}%0A`;
+                        if(transactionId) msg += `*Txn ID:* ${transactionId}%0A`;
+                        msg += `%0A*Items:*%0A`;
+                        cart.forEach(item => { msg += `- ${item.name} (${item.quantity}${item.unit_label}) x ₹${item.price}%0A`; });
+                        msg += `%0A*Total:* ₹${finalTotal}`;
+                        const waUrl = `https://wa.me/918881856426?text=${msg}`;
+
+                        Swal.fire({
+                            title: 'Order Completed!',
+                            text: 'Thank you for your order, you will receive it soon!',
+                            icon: 'success',
+                            confirmButtonColor: '#2d5a27',
+                            confirmButtonText: 'Send via WhatsApp'
+                        }).then(() => {
+                            localStorage.removeItem('vaishnavi_cart');
+                            window.open(waUrl, '_blank');
+                            window.location.href = 'shop.html';
+                        });
+                    } else {
+                        throw new Error(result.error);
+                    }
+                } else if (selectedPaymentType === 'card') {
+                    // Razorpay Flow
+                    const orderRes = await fetch('/api/payment/create-order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ amount: cartTotal + deliveryCharge })
+                    });
+                    const orderData = await orderRes.json();
+
+                    const options = {
+                        "key": "rzp_test_your_key_id",
+                        "amount": orderData.amount,
+                        "currency": "INR",
+                        "name": "Vaishnavi Mava Bhandar",
+                        "description": "Premium Dairy Products",
+                        "order_id": orderData.id,
+                        "handler": async function (response) {
+                            const verifyRes = await fetch('/api/payment/verify', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    items: cart,
+                                    customer: { name, phone, address: `${area}, ${address}` },
+                                    delivery_fee: deliveryCharge
+                                })
+                            });
+                            const verifyData = await verifyRes.json();
+                            if (verifyData.status === 'success') {
+                                // Generate WhatsApp Message
+                                const finalTotal = cartTotal + deliveryCharge;
+                                let msg = `*New Order - Vaishnavi Mava Bhandar*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${area}, ${address}%0A*Payment: PAID (Razorpay)*%0A*Razorpay ID:* ${response.razorpay_payment_id}%0A`;
+                                msg += `%0A*Items:*%0A`;
+                                cart.forEach(item => { msg += `- ${item.name} (${item.quantity}${item.unit_label}) x ₹${item.price}%0A`; });
+                                msg += `%0A*Total:* ₹${finalTotal}`;
+                                const waUrl = `https://wa.me/918881856426?text=${msg}`;
+
+                                Swal.fire({
+                                    title: 'Order Completed!',
+                                    text: 'Thank you for your order! Your payment was successful.',
+                                    icon: 'success',
+                                    confirmButtonColor: '#2d5a27',
+                                    confirmButtonText: 'Send via WhatsApp'
+                                }).then(() => {
+                                    localStorage.removeItem('vaishnavi_cart');
+                                    window.open(waUrl, '_blank');
+                                    window.location.href = 'shop.html';
+                                });
+                            }
+                        },
+                        "prefill": { "name": name, "contact": phone },
+                        "theme": { "color": "#2D5A27" }
+                    };
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                }
+                
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = originalText;
+
+            } catch (err) {
+                console.error(err);
+                alert("Order failed: " + err.message);
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = originalText;
+            }
+        }
+
+        renderSummary();
+    </script>
+</body>
+</html>

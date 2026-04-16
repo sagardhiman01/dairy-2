@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaishnavi Mava Bhandar | Premium Fresh Khoya, Ghee & Dairy — Farm to Doorstep</title>
+    <meta name="description" content="Vaishnavi Mava Bhandar delivers purest farm-fresh khoya (mava), ghee, paneer, and milk across India. Quality since 2010. Order now!">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="loader.js" defer></script>
+</head>
+<body>
+
+    <!-- Category Sidebar -->
+    <div class="category-sidebar-overlay" id="sidebar-overlay"></div>
+    <aside class="category-sidebar" id="category-sidebar">
+        <div class="sidebar-header">
+            <h3>Browse Categories</h3>
+            <button class="close-sidebar" id="close-sidebar"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-links">
+                <li><a href="shop.html"><i class="fas fa-bottle-water"></i> Fresh Milk</a></li>
+                <li><a href="shop.html"><i class="fas fa-cheese"></i> Fresh Paneer</a></li>
+                <li><a href="shop.html"><i class="fas fa-fire"></i> Pure Ghee</a></li>
+                <li><a href="shop.html"><i class="fas fa-ice-cream"></i> Curd & Lassi</a></li>
+                <li><a href="shop.html"><i class="fas fa-cookie"></i> Khoya & Sweets</a></li>
+                <li><a href="shop.html"><i class="fas fa-leaf"></i> Green Peas</a></li>
+                <li><a href="shop.html"><i class="fas fa-bread-slice"></i> Bakery</a></li>
+                <li><a href="shop.html"><i class="fas fa-cow"></i> Butter & Cream</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="top-bar">
+            <div class="container">
+                <div class="top-bar-content">
+                    <div class="top-left">
+                        <span><i class="fas fa-truck"></i> Pan India Delivery Available</span>
+                        <span><i class="fas fa-location-dot"></i> Serving All Over India</span>
+                    </div>
+                    <div class="top-right">
+                        <span><i class="fas fa-phone"></i> +91 88818 56426</span>
+                        <span><i class="fas fa-envelope"></i> vaishnavidairyindia@gmail.com</span>
+                        <a href="login.html"><i class="far fa-user"></i> Login / Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="container">
+                <div class="main-header-content">
+                    <a href="/" class="logo">
+                        <span class="logo-icon"><i class="fas fa-cow"></i></span>
+                        <div class="logo-text">VAISHNAVI <span>MAVA BHANDAR</span></div>
+                    </a>
+
+                    <div class="search-bar">
+                        <select name="category" id="search-cat">
+                            <option value="0">All Categories</option>
+                            <option value="1">Fresh Milk</option>
+                            <option value="2">Paneer</option>
+                            <option value="3">Ghee</option>
+                            <option value="4">Curd</option>
+                            <option value="5">Butter</option>
+                            <option value="6">Khoya</option>
+                        </select>
+                        <input type="text" placeholder="Search products...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="action-item wishlist">
+                            <i class="far fa-heart"></i>
+                            <span class="badge">0</span>
+                        </div>
+                        <div class="action-item cart">
+                            <div class="cart-icon">
+                                <i class="fas fa-shopping-basket"></i>
+                                <span class="badge">0</span>
+                            </div>
+                            <div class="cart-total">
+                                <span>Your Cart</span>
+                                <strong>₹0.00</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navigation">
+            <div class="container">
+                <div class="nav-left">
+                    <button class="btn-sidebar-toggle" id="open-sidebar">
+                        <i class="fas fa-bars"></i>
+                        <span>Browse Categories</span>
+                    </button>
+                    <ul class="nav-links">
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="nav-cta">
+                    <a href="shop.html" class="btn-gift"><i class="fas fa-shopping-bag"></i> Order Now</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Slider -->
+        <section class="hero swiper heroSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide hero-slide slide-1" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1595981234058-a9302fb97229?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center;">
+                    <div class="container">
+                        <div class="hero-content">
+                            <span class="subtitle">Premium Fresh</span>
+                            <h1>Dairy Products</h1>
+                            <p>Discover the creamy, rich taste of dairy produced with love and care — delivered fresh to your doorstep every morning.</p>
+                            <div class="hero-buttons">
+                                <a href="shop.html" class="btn btn-primary">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide hero-slide slide-2" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center;">
+                    <div class="container">
+                        <div class="hero-content">
+                            <span class="subtitle">Traditional</span>
+                            <h1>A2 Cow Ghee</h1>
+                            <p>Made using the ancient bilona method from pure A2 cow milk. Taste the difference of tradition in every spoonful.</p>
+                            <div class="hero-buttons">
+                                <a href="shop.html" class="btn btn-primary">Shop Ghee</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide hero-slide slide-3" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center;">
+                    <div class="container">
+                        <div class="hero-content">
+                            <span class="subtitle">Farm Fresh</span>
+                            <h1>Pure Khoya & Paneer</h1>
+                            <p>Handcrafted mava and soft malai paneer — the foundation of every delicious Indian sweet and dish.</p>
+                            <div class="hero-buttons">
+                                <a href="shop.html" class="btn btn-primary">Order Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </section>
+
+        <!-- Features Bar -->
+        <section class="features-bar">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="icon"><i class="fas fa-truck-fast"></i></div>
+                        <div class="text">
+                            <h3>Free Delivery</h3>
+                            <p>Delhi, Noida, Ghaziabad, Meerut & more</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon"><i class="fas fa-shield-halved"></i></div>
+                        <div class="text">
+                            <h3>100% Pure Quality</h3>
+                            <p>No preservatives or chemicals</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon"><i class="fas fa-leaf"></i></div>
+                        <div class="text">
+                            <h3>Farm Fresh Daily</h3>
+                            <p>Direct from our farms to you</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <div class="text">
+                            <h3>Morning & Evening</h3>
+                            <p>Daily fresh deliveries, twice a day</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Preview Section -->
+        <section class="about-preview py-section">
+            <div class="container">
+                <div class="about-preview-grid">
+                    <div class="about-preview-images">
+                        <div class="img-stack">
+                            <img src="https://images.unsplash.com/photo-1595981234058-a9302fb97229?auto=format&fit=crop&w=500&q=80" alt="Farm Fresh Dairy" class="img-main">
+                            <img src="https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=300&q=80" alt="Our Cows" class="img-accent">
+                            <div class="experience-badge">
+                                <span class="number">15+</span>
+                                <span class="label">Years of Trust</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-preview-content">
+                        <span class="section-label"><i class="fas fa-leaf"></i> About Vaishnavi Mava Bhandar</span>
+                        <h2 class="section-title">From Our Farm <br>To <span>Your Family</span></h2>
+                        <p class="lead-text">We are a family-run dairy committed to delivering 100% natural, chemical-free products made from the milk of our healthy, grass-fed cows.</p>
+                        <div class="about-features-list">
+                            <div class="about-feature">
+                                <div class="af-icon"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <h4>No Preservatives</h4>
+                                    <p>Every product is fresh, natural, and free from harmful chemicals.</p>
+                                </div>
+                            </div>
+                            <div class="about-feature">
+                                <div class="af-icon"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <h4>Farm Direct</h4>
+                                    <p>Sourced and delivered directly — no middleman, no delays.</p>
+                                </div>
+                            </div>
+                            <div class="about-feature">
+                                <div class="af-icon"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <h4>Trusted by 5000+ Families</h4>
+                                    <p>Serving NCR & Haryana with the purest dairy since 2010.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="about.html" class="btn btn-primary">Read Our Story</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories py-section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label"><i class="fas fa-th-large"></i> What We Offer</span>
+                    <h2>Our Dairy <span>Specialties</span></h2>
+                    <p>Explore our wide range of premium farm-fresh products.</p>
+                </div>
+                <div class="categories-grid">
+                    <a href="shop.html" class="cat-card">
+                        <div class="cat-img"><img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=200&h=200&fit=crop" alt="Milk"></div>
+                        <h4>Fresh Milk</h4>
+                    </a>
+                    <a href="shop.html" class="cat-card">
+                        <div class="cat-img"><img src="paneer.png" alt="Paneer"></div>
+                        <h4>Fresh Paneer</h4>
+                    </a>
+                    <a href="shop.html" class="cat-card">
+                        <div class="cat-img"><img src="ghee.png" alt="Desi Ghee"></div>
+                        <h4>Pure Desi Ghee</h4>
+                    </a>
+                    <a href="shop.html" class="cat-card">
+                        <div class="cat-img"><img src="khoya.png" alt="Khoya"></div>
+                        <h4>Fresh Khoya</h4>
+                    </a>
+                    <a href="shop.html" class="cat-card">
+                        <div class="cat-img"><img src="chaap.png" alt="Snacks"></div>
+                        <h4>Snacks & Chaap</h4>
+                    </a>
+                    <a href="shop.html" class="cat-card">
+                        <div class="cat-img"><img src="peas.png" alt="Vegetables"></div>
+                        <h4>Farm Fresh Matar</h4>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works py-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label"><i class="fas fa-route"></i> How It Works</span>
+                    <h2>Three Simple <span>Steps</span></h2>
+                    <p>Getting farm-fresh dairy delivered to your door has never been easier.</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-icon"><i class="fas fa-hand-pointer"></i></div>
+                        <h3>Choose Products</h3>
+                        <p>Browse our wide selection of premium dairy products and add your favorites to the cart.</p>
+                    </div>
+                    <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+                        <h3>Place Order</h3>
+                        <p>Select your delivery area (Delhi NCR & Haryana), choose payment method — COD, UPI, or Card.</p>
+                    </div>
+                    <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-icon"><i class="fas fa-truck"></i></div>
+                        <h3>Get Delivered</h3>
+                        <p>Receive fresh dairy at your doorstep — morning or evening, absolutely free delivery!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials py-section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label"><i class="fas fa-quote-left"></i> Testimonials</span>
+                    <h2>What Our <span>Customers Say</span></h2>
+                    <p>Trusted by thousands of families across NCR & Haryana.</p>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="testimonial-text">"Vaishnavi Mava Bhandar ka ghee aur khoya dono ekdum pure hain. Meri family ko bahut pasand aaya!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"><i class="fas fa-user-circle"></i></div>
+                            <div><h4>Sunita Sharma</h4><span>Delhi</span></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card featured">
+                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="testimonial-text">"Best quality paneer and mava I've ever tasted. Farm fresh taste with every order. Highly recommended!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"><i class="fas fa-user-circle"></i></div>
+                            <div><h4>Rajesh Kumar</h4><span>Baghpat</span></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="testimonial-text">"Delivery time par aati hai aur quality consistent hai. Ab market se nahi, sirf Vaishnavi se leti hoon."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"><i class="fas fa-user-circle"></i></div>
+                            <div><h4>Priya Verma</h4><span>Meerut</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Delivery Info Section -->
+        <section class="delivery-info py-section">
+            <div class="container">
+                <div class="delivery-grid">
+                    <div class="delivery-content">
+                        <span class="section-label"><i class="fas fa-map-marked-alt"></i> Delivery Areas</span>
+                        <h2 class="section-title">We Deliver <span>Across NCR</span></h2>
+                        <p>Fresh dairy delivered to your doorstep in the following regions, absolutely free!</p>
+                        <div class="delivery-areas-list">
+                            <div class="area-tag"><i class="fas fa-globe"></i> All Over India</div>
+                            <div class="area-tag"><i class="fas fa-map-pin"></i> Delhi NCR</div>
+                            <div class="area-tag"><i class="fas fa-map-pin"></i> Uttar Pradesh</div>
+                            <div class="area-tag"><i class="fas fa-map-pin"></i> Haryana</div>
+                            <div class="area-tag"><i class="fas fa-map-pin"></i> Punjab</div>
+                            <div class="area-tag"><i class="fas fa-map-pin"></i> Rajasthan</div>
+                        </div>
+                        <div class="delivery-highlights">
+                            <div class="dh-item">
+                                <i class="fas fa-sun"></i>
+                                <div>
+                                    <h4>Morning Delivery</h4>
+                                    <p>6:00 AM — 9:00 AM</p>
+                                </div>
+                            </div>
+                            <div class="dh-item">
+                                <i class="fas fa-moon"></i>
+                                <div>
+                                    <h4>Evening Delivery</h4>
+                                    <p>5:00 PM — 8:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="delivery-image">
+                        <img src="ncr_delivery.png" alt="NCR Dairy Delivery Service">
+                        <div class="free-delivery-badge">
+                            <i class="fas fa-truck-fast"></i>
+                            <span>FREE<br>Delivery</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section py-section">
+            <div class="container">
+                <div class="cta-card">
+                    <div class="cta-content">
+                        <h2>Ready for <span>Farm-Fresh</span> Dairy?</h2>
+                        <p>Order now and get pure, chemical-free dairy products delivered to your doorstep. Minimum order ₹1000 only.</p>
+                        <div class="cta-buttons">
+                            <a href="shop.html" class="btn btn-primary btn-lg">Shop Now <i class="fas fa-arrow-right"></i></a>
+                            <a href="contact.html" class="btn btn-secondary-outline btn-lg">Contact Us</a>
+                        </div>
+                        <div class="cta-trust">
+                            <div class="trust-item"><i class="fas fa-wallet"></i> COD Available</div>
+                            <div class="trust-item"><i class="fas fa-qrcode"></i> UPI Payment</div>
+                            <div class="trust-item"><i class="fas fa-credit-card"></i> Card Payment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flash Deal Section -->
+        <section class="flash-deal swiper dealSwiper py-section bg-light">
+            <div class="container">
+                <div class="deal-card">
+                    <div class="deal-content">
+                        <h2 class="section-title">Deals of <span>the Week</span></h2>
+                        <p>Limited time offer on our fresh farm bundles!</p>
+                        <div class="countdown-timer" id="timer">
+                            <div class="time-block">
+                                <span id="days">00</span>
+                                <label>Days</label>
+                            </div>
+                            <div class="time-block">
+                                <span id="hours">00</span>
+                                <label>Hours</label>
+                            </div>
+                            <div class="time-block">
+                                <span id="mins">00</span>
+                                <label>Mins</label>
+                            </div>
+                            <div class="time-block">
+                                <span id="secs">00</span>
+                                <label>Secs</label>
+                            </div>
+                        </div>
+                        <a href="shop.html" class="btn btn-primary">Shop Deal Now</a>
+                    </div>
+                    <div class="deal-image">
+                        <img src="cow_farm_bg.png" alt="Dairy Bundle">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col brand">
+                        <a href="/" class="logo logo-light">
+                            <span class="logo-icon"><i class="fas fa-cow"></i></span>
+                            <div class="logo-text">VAISHNAVI <span>MAVA BHANDAR</span></div>
+                        </a>
+                        <p>Providing the purest and freshest dairy products across India. We take pride in our traditional quality and farm-fresh purity.</p>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/share/18fFbD3Nhe/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/vaishnavi.dairy?igsh=MWhveXdpempwcmI2bw==" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://wa.me/qr/FESS3WGWCS47G1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-col links">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="shop.html">Shop Products</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col links">
+                        <h3>Policies</h3>
+                        <ul>
+                            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
+                            <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                            <li><a href="refund-policy.html">Refund Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col links">
+                        <h3>Products</h3>
+                        <ul>
+                            <li><a href="shop.html">Fresh Milk</a></li>
+                            <li><a href="shop.html">Pure Ghee</a></li>
+                            <li><a href="shop.html">Paneer</a></li>
+                            <li><a href="shop.html">Curd & Lassi</a></li>
+                            <li><a href="shop.html">Khoya</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col contact">
+                        <h3>Contact Us</h3>
+                        <div class="contact-item">
+                            <i class="fas fa-location-dot"></i>
+                            <p>Tyodhi Baraut (Baghpat)</p>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <p>+91 88818 56426, 99972 54827</p>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <p>vaishnavidairyindia@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Vaishnavi Mava Bhandar. All Rights Reserved.</p>
+                    <div class="payment-methods">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <i class="fas fa-qrcode"></i>
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="cart-manager.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

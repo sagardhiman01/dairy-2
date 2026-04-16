@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Vaishnavi Mava Bhandar</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --secondary: #fbc02d;
+            --bg-dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            transition: 0.3s;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-light); margin-bottom: 3rem; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-links { list-style: none; flex-grow: 1; }
+        .nav-link { 
+            padding: 1rem; border-radius: 12px; cursor: pointer; color: var(--text-dim); 
+            display: flex; align-items: center; gap: 1rem; transition: 0.2s; margin-bottom: 0.5rem;
+        }
+        .nav-link:hover, .nav-link.active { background: var(--primary); color: white; }
+        .logout { margin-top: auto; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        /* Main Content */
+        .main-content { flex-grow: 1; padding: 2.5rem; overflow-y: auto; background: radial-gradient(circle at top right, rgba(46, 125, 50, 0.05), transparent); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .header h1 { font-size: 2rem; font-weight: 700; }
+
+        /* Glass Cards */
+        .card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; backdrop-filter: blur(10px); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .stat-card { text-align: center; }
+        .stat-card h3 { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--primary-light); }
+
+        /* Forms & Tables */
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th { text-align: left; color: var(--text-dim); font-weight: 500; padding: 1rem; border-bottom: 1px solid var(--glass-border); }
+        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .badge-pending { background: rgba(251, 192, 45, 0.1); color: var(--secondary); }
+        .badge-completed { background: rgba(76, 175, 80, 0.1); color: var(--primary-light); }
+
+        .btn { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-ghost { background: transparent; border: 1px solid var(--glass-border); color: var(--text-main); }
+        .btn-icon { padding: 8px; font-size: 1rem; }
+        .btn-delete { color: #ef4444; }
+
+        input, select, textarea { 
+            width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); 
+            border-radius: 10px; padding: 12px; color: white; margin-top: 8px; outline: none; transition: 0.2s;
+        }
+        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.06); }
+        .form-group { margin-bottom: 1.5rem; }
+        label { color: var(--text-dim); font-size: 0.9rem; }
+
+        /* Login Overlay */
+        .login-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-dark);
+            display: flex; align-items: center; justify-content: center; z-index: 1000;
+        }
+        .login-card { width: 400px; padding: 3rem; text-align: center; }
+
+        /* Hidden Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+        /* Mobile Responsiveness */
+        .mobile-toggle { display: none; font-size: 1.5rem; color: white; cursor: pointer; }
+
+        @media (max-width: 992px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { 
+                position: fixed; top: 0; left: -260px; width: 260px; height: 100vh; z-index: 2000; 
+                background: var(--bg-dark);
+            }
+            .sidebar.active { left: 0; }
+            .main-content { padding: 1.5rem; width: 100%; }
+            .mobile-toggle { display: block; }
+            .header { margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap; }
+            .header h1 { font-size: 1.5rem; }
+            
+            .stats-grid { grid-template-columns: 1fr; }
+            .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            
+            .login-card { width: 90%; padding: 2rem; }
+            .card { padding: 1.25rem; }
+        }
+
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1999; display: none;
+        }
+        .sidebar-overlay.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- Login Section -->
+    <div id="login-screen" class="login-overlay">
+        <div class="login-card card">
+            <div class="logo" style="justify-content: center; margin-bottom: 2rem;">
+                <span class="logo-icon"><i class="fas fa-cow"></i></span>
+                <div class="logo-text">VAISHNAVI ADMIN</div>
+            </div>
+            <p style="color: var(--text-dim); margin-bottom: 2rem;">Please enter your admin credentials</p>
+            <div class="form-group" style="text-align: left;">
+                <label>Admin Password</label>
+                <input type="password" id="admin-pass" placeholder="Enter password...">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="attemptLogin()">Login Dashboard</button>
+            <p id="login-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; display: none;">Invalid credentials. Try again.</p>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <span class="logo-icon"><i class="fas fa-cow"></i></span>
+            <div class="logo-text">VAISHNAVI</div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-link active" data-target="dash"><i class="fas fa-chart-pie"></i> Orders</li>
+            <li class="nav-link" data-target="users"><i class="fas fa-users"></i> Users</li>
+            <li class="nav-link" data-target="products"><i class="fas fa-box"></i> Products</li>
+            <li class="nav-link" data-target="hero"><i class="fas fa-images"></i> Hero Slider</li>
+            <li class="nav-link" data-target="settings"><i class="fas fa-cog"></i> Site Settings</li>
+        </ul>
+        <button class="btn btn-ghost logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </aside>
+
+    <main class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="mobile-toggle" onclick="toggleMobileSidebar()"><i class="fas fa-bars"></i></div>
+                <h1 id="page-title">Orders Management</h1>
+            </div>
+            <div class="user-info">
+                <span style="color: var(--text-dim);">Welcome,</span> <strong>Admin</strong>
+            </div>
+        </div>
+
+        <!-- Dashboard (Orders) -->
+        <div id="dash" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card card">
+                    <h3>Total Orders</h3>
+                    <div class="value" id="total-orders-count">0</div>
+                </div>
+                <div class="stat-card card">
+                    <h3>Total Sales</h3>
+                    <div class="value" id="total-sales">₹0</div>
+                </div>
+                <div class="stat-card card">
+                    <h3>Pending</h3>
+                    <div class="value" id="pending-orders">0</div>
+                </div>
+            </div>
+            <div class="card table-container">
+                <h3>Recent Orders</h3>
+                <table id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Orders injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Users Management -->
+        <div id="users" class="tab-content">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h3>Registered Users</h3>
+            </div>
+            <div class="card table-container" style="padding: 0;">
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Users injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Products Management -->
+        <div id="products" class="tab-content">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h3>Store Products</h3>
+                <button class="btn btn-primary" onclick="showProductModal()"><i class="fas fa-plus"></i> Add Product</button>
+            </div>
+            <div class="card table-container" style="padding: 0;">
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Badge</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Products injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Hero Manager -->
+        <div id="hero" class="tab-content">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h3>Homepage Hero Slides</h3>
+                <button class="btn btn-primary" onclick="showHeroModal()"><i class="fas fa-plus"></i> Add Slide</button>
+            </div>
+            <div id="hero-slides-container">
+                <!-- Slides as Cards -->
+            </div>
+        </div>
+
+        <!-- Site Settings -->
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <h3>Global Configuration</h3>
+                <div style="margin-top: 1.5rem; max-width: 600px;">
+                    <div class="form-group">
+                        <label>Business Name</label>
+                        <input type="text" id="set-site_name">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Phone</label>
+                        <input type="text" id="set-contact_phone">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" id="set-contact_email">
+                    </div>
+                    <div class="form-group">
+                        <label>Physical Address</label>
+                        <textarea id="set-contact_address" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Min Order (₹)</label>
+                        <input type="number" id="set-min_order" value="100">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Delivery Rate (₹/km)</label>
+                            <input type="number" id="set-delivery_rate" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Fallback Delivery Fee (₹)</label>
+                            <input type="number" id="set-fallback_delivery_fee" value="50">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Store Latitude</label>
+                            <input type="text" id="set-store_lat" value="28.6139">
+                        </div>
+                        <div class="form-group">
+                            <label>Store Longitude</label>
+                            <input type="text" id="set-store_lng" value="77.2090">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveSettings()">Save All Changes</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modals (Simple Overlays) -->
+    <div id="product-modal" class="login-overlay" style="display: none; background: rgba(15, 23, 42, 0.9);">
+        <div class="card" style="width: 90%; max-width: 500px; padding: 2rem; max-height: 90vh; overflow-y: auto;">
+            <h3 id="modal-title">Edit Product</h3>
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="prod-name">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label>Price (₹)</label>
+                    <input type="number" id="prod-price">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="prod-cat">
+                        <option value="Dairy">Dairy</option>
+                        <option value="Milk">Milk</option>
+                        <option value="Beverage">Beverage</option>
+                        <option value="Sweets">Sweets</option>
+                        <option value="Bakery">Bakery</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Image URL / Path</label>
+                <input type="text" id="prod-img">
+            </div>
+            <div class="form-group">
+                <label>Badge (e.g., Premium, Sale)</label>
+                <input type="text" id="prod-badge">
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+                <button class="btn btn-ghost" onclick="closeModal('product-modal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin.js"></script>
+</body>
+</html>
