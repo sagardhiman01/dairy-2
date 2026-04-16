@@ -153,6 +153,39 @@ app.post('/api/orders/manual', async (req, res) => {
         const placeholder = isPostgres ? '$1, $2, $3, $4, $5, $6, $7, $8, $9' : '?, ?, ?, ?, ?, ?, ?, ?, ?';
         await runQuery(`INSERT INTO orders (items, total, status, customer_name, customer_phone, customer_address, payment_status, razorpay_order_id, delivery_fee) VALUES (${placeholder})`,
             [JSON.stringify(items), total, 'pending', customer.name, customer.phone, customer.address, payment_method === 'cod' ? 'cod' : 'pending_verification', transaction_id || '', delivery_fee || 0]);
+        
+        // --- Send Email Notification ---
+        try {
+            const nodemailer = require('nodemailer');
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL_USER || 'vaishnavimavabhandarindia@gmail.com', // fallback fake email
+                    pass: process.env.EMAIL_PASS || 'dummypassword'
+                }
+            });
+            const itemList = items.map(i => `${i.name} (x${i.quantity}) - ₹${i.price * i.quantity}`).join('<br>');
+            await transporter.sendMail({
+                from: process.env.EMAIL_USER || 'vaishnavimavabhandarindia@gmail.com',
+                to: 'vaishnavidairyindia@gmail.com', // Admin's actual email
+                subject: `New Order Received - ${customer.name}`,
+                html: `
+                    <h2>New Order Alert</h2>
+                    <p><strong>Customer:</strong> ${customer.name}</p>
+                    <p><strong>Phone:</strong> ${customer.phone}</p>
+                    <p><strong>Address:</strong> ${customer.address}</p>
+                    <p><strong>Payment Method:</strong> ${payment_method.toUpperCase()}</p>
+                    ${transaction_id ? `<p><strong>Transaction ID:</strong> ${transaction_id}</p>` : ''}
+                    <h3>Order Items:</h3>
+                    <p>${itemList}</p>
+                    <p><strong>Delivery Fee:</strong> ₹${delivery_fee || 0}</p>
+                    <h3><strong>Total: ₹${total}</strong></h3>
+                `
+            });
+        } catch (mailErr) {
+            console.error("Nodemailer failed to send email (likely missing config):", mailErr.message);
+        }
+
         res.json({ status: 'success' });
     } catch (err) {
         res.status(500).json({ error: err.message });

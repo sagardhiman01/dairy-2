@@ -124,7 +124,7 @@
                 <span style="background: var(--bg); padding: 0 10px; position: relative; z-index: 2;">OR</span>
             </div>
             <button type="button" class="btn" style="background: white; color: #333; display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="googleSignup()">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" style="width: 20px;">
+                <i class="fab fa-google" style="color: #DB4437; font-size: 18px;"></i>
                 Sign up with Google
             </button>
         </form>
@@ -166,10 +166,12 @@
         });
 
         function googleSignup() {
+            const email = prompt("Google Sign-In Simulation:\n\nPlease select/enter the Google email address you want to use to sign up:");
+            if (!email) return;
             localStorage.setItem('user_token', 'google-auth-mock-token');
             localStorage.setItem('user_data', JSON.stringify({
-                name: "Google User",
-                email: "user@gmail.com",
+                name: email.split('@')[0],
+                email: email,
                 role: "customer"
             }));
             window.location.href = 'index.html';
