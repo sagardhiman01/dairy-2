@@ -349,8 +349,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Image URL / Path</label>
-                <input type="text" id="prod-img">
+                <label>Product Image Upload</label>
+                <input type="file" id="prod-img-upload" accept="image/*">
+                <input type="hidden" id="prod-img-hidden">
+                <small style="color:var(--text-dim); display:block; margin-top:5px;">If you select a file, it will replace the current image. If left blank, the current image is kept.</small>
             </div>
             <div class="form-group">
                 <label>Badge (e.g., Premium, Sale)</label>

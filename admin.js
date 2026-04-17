@@ -168,7 +168,8 @@ const showProductModal = (prod = null) => {
     document.getElementById('prod-name').value = prod ? prod.name : '';
     document.getElementById('prod-price').value = prod ? prod.price : '';
     document.getElementById('prod-cat').value = prod ? prod.category : 'Dairy';
-    document.getElementById('prod-img').value = prod ? prod.image : '';
+    document.getElementById('prod-img-hidden').value = prod ? prod.image : '';
+    document.getElementById('prod-img-upload').value = '';
     document.getElementById('prod-badge').value = prod ? prod.badge : '';
     document.getElementById('product-modal').style.display = 'flex';
 };
@@ -176,11 +177,23 @@ const showProductModal = (prod = null) => {
 window.editProduct = (p) => showProductModal(p);
 
 const saveProduct = async () => {
+    const fileInput = document.getElementById('prod-img-upload');
+    let finalImage = document.getElementById('prod-img-hidden').value;
+
+    if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        finalImage = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+        });
+    }
+
     const data = {
         name: document.getElementById('prod-name').value,
         price: parseFloat(document.getElementById('prod-price').value),
         category: document.getElementById('prod-cat').value,
-        image: document.getElementById('prod-img').value,
+        image: finalImage,
         badge: document.getElementById('prod-badge').value,
         unit_label: 'kg', // Default for now
         min_qty: 1

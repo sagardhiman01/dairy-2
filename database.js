@@ -132,16 +132,21 @@ const initDB = async () => {
     const productCount = [{ count: 0 }]; // Force true
     if (true) {
         const products = [
-            ['Premium Cow Ghee', 750, 'Dairy', 'desi_ghee.png', 5.0, 'Premium', 'kg', 1],
-            ['Fresh Malai Paneer', 450, 'Dairy', 'malai_paneer.png', 5.0, 'Best Seller', 'kg', 0.5],
-            ['Full Cream Fresh Milk', 68, 'Milk', 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80', 4.9, 'Fresh', 'L', 2],
-            ['Khoya (Mawa)', 380, 'Dairy', 'khoya.png', 4.7, '', 'kg', 0.5],
-            ['Fresh Thick Curd', 120, 'Dairy', 'curd.png', 4.8, '', 'kg', 1],
-            ['Fresh Soy Chaap', 150, 'Dairy', 'chaap.png', 4.6, 'Fresh', 'kg', 1],
-            ['Masala Buttermilk', 35, 'Beverage', 'masala_buttermilk.png', 4.8, 'Cooling', 'L', 1],
-            ['Frozen Green Peas', 90, 'Dairy', 'peas.png', 4.7, '', 'kg', 1],
-            ['Artisan Cheese', 650, 'Dairy', 'artisan_cheese_cat.png', 4.9, 'Premium', 'kg', 0.25],
-            ['Fresh Pav Bread', 45, 'Bakery', 'pav.png', 4.6, 'Fresh', 'pack', 1]
+            // Dairy Products
+            ['Khoya', 320, 'Dairy', 'khoya.png', 5.0, 'Best Seller', 'kg', 0.5],
+            ['Paneer', 260, 'Dairy', 'paneer.png', 5.0, 'Fresh', 'kg', 0.5],
+            ['Cream', 300, 'Dairy', 'malai_paneer.png', 4.8, '', 'kg', 0.5],
+            ['Clarified butter (Ghee)', 800, 'Dairy', 'ghee.png', 5.0, 'Premium', 'kg', 1],
+            ['Milk', 65, 'Dairy', 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80', 4.9, 'Fresh', 'litre', 1],
+            ['Curd', 72, 'Dairy', 'curd.png', 4.8, '', 'kg', 1],
+            ['Chhena', 350, 'Dairy', 'paneer.png', 4.9, 'Fresh', 'kg', 0.5],
+            ['Butter', 550, 'Dairy', 'desi_ghee.png', 4.7, '', 'kg', 0.5],
+            // Other Food Items
+            ['Green peas', 70, 'Other Food Items', 'peas.png', 4.7, '', 'kg', 1],
+            ['Chowmein', 40, 'Other Food Items', 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=600&q=80', 4.5, '', 'kg', 1],
+            ['Chaap', 150, 'Other Food Items', 'chaap.png', 4.6, '', 'kg', 1],
+            ['Pav', 7, 'Other Food Items', 'pav.png', 4.8, '', 'per pav', 1],
+            ['Kulcha', 7, 'Other Food Items', 'pav.png', 4.6, '', 'per kulcha', 1]
         ];
         for (let p of products) {
             const placeholder = isPostgres ? '$1, $2, $3, $4, $5, $6, $7, $8' : '?, ?, ?, ?, ?, ?, ?, ?';
